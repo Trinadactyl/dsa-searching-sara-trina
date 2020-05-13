@@ -54,6 +54,7 @@ pre-order:
 
 
 const BinarySearchTree = require('./BinarySearchTree')
+const { Queue, display, size } = require('./Queue')
 
 let data = [25, 15, 50, 10, 24, 35, 70, 4, 12, 18, 31, 44, 66, 90, 22]
 
@@ -62,13 +63,13 @@ function createTree(data) {
   let bTree = new BinarySearchTree()
 
   data.forEach(item => {
-    bTree.insert(item)
+    bTree.insert(item.key, item.value)
   })
 
   return bTree
 }
 
-let bTree = createTree(data)
+// let bTree = createTree(data)
 // console.log(bTree.left.left.key)
 
 function dsfPreOrder(tree){
@@ -105,5 +106,94 @@ function dsfPostOrder(tree) {
   }
   console.log(tree.key)
 }
-dsfPostOrder(bTree)
+// dsfPostOrder(bTree)
 //4, 12, 10, 22, 18, 24, 15, 31, 44, 35, 66, 90, 70, 50, 25
+
+
+/*
+
+             Captain Picard
+             /                \
+    Commander Riker       Commander Data
+      /         \               \
+ Lt. Cmdr.   Lt. Cmdr.          Lt. Cmdr.
+ Worf        LaForge            Crusher
+   /                           /
+Lieutenant                  Lieutenant
+security-officer            Selar
+
+
+8  
+
+                     8
+             /            \
+           7               6
+      /         \           \
+    5           4            3  
+   /                        /
+  2                        1
+
+
+*/
+
+let command = [
+  {
+    key: '80',
+    value: 'Captain Picard'
+  },
+  {
+    key: '70',
+    value: 'Commander Riker'
+  },
+  {
+    key: '90',
+    value: 'Commander Data'
+  },
+  {
+    key: '60',
+    value: 'Lt. Cmdr. Worf'
+  },
+  {
+    key: '75',
+    value: 'Lt. Cmdr. LaForge'
+  },
+  {
+    key: '95',
+    value: 'Lt. Cmdr. Crusher'
+  },
+  {
+    key: '50',
+    value: 'Lieutenant security-officer'
+  },
+  {
+    key: '92',
+    value: 'Lieutenant Selar'
+  },
+]
+
+
+
+
+function bfs(tree, values = []) {
+  const queue = new Queue(); // Assuming a Queue is implemented (refer to previous lesson on Queue)
+  const node = tree;
+  queue.enqueue(node);
+
+  while (size(queue)) {
+      const node = queue.dequeue(); //remove from the queue
+
+      values.push(node.value); // add that value from the queue to an array
+
+    if (node.left) {
+        queue.enqueue(node.left); //add left child to the queue
+    }
+    if (node.right) {
+        queue.enqueue(node.right); // add right child to the queue
+    }
+  }
+  return values;
+}
+
+let commandTree = createTree(command)
+
+console.log(bfs(commandTree))
